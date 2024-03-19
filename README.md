@@ -26,7 +26,7 @@ To use this tool, follow these steps:
 4. Run the script:
 
 ```bash
-python djia_portfolio_analysis.py
+python src.py
 ```
 
 5. When prompted, enter your stock portfolio using the format 'Symbol1 Quantity1, Symbol2 Quantity2,...' (e.g., 'AAPL 5, BA 5').
