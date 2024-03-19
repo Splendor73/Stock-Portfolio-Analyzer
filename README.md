@@ -1,5 +1,3 @@
-Here's a README formatted specifically for GitHub to describe your project. This template includes sections for a project title, description, installation, usage, contributing, and license. Feel free to customize it further to fit your project's needs.
-
 ```markdown
 # DJIA Portfolio Analysis Tool
 
@@ -44,5 +42,3 @@ Contributions to this project are welcome. To contribute:
 5. Open a pull request.
 
 ```
-
-Remember to add an actual `LICENSE` file in your project repository if you mention it in the README. The MIT License is a popular choice for open-source projects, but you should choose the license that best fits your project.
