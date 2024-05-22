@@ -88,6 +88,11 @@ def main():
 
     # pd.set_option('display.max_rows', None) // uncomment this line if you want to see the full row of fetching data
 
+    # Header
+    print("=============================================")
+    print("       DJIA Stock Portfolio Analysis")
+    print("=============================================")
+
     wiki_url = "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"
     stocks = scrape_djia_stocks(wiki_url)
     if stocks:
@@ -99,7 +104,7 @@ def main():
         print("Failed to scrape DJIA stocks.")
     
     # Your API key
-    rapidapi_key = '8d34eb0b88mshc982a011ac648f3p17d5c6jsn82e7b43f8ff5'
+    rapidapi_key = 'You Key'
     
     # Example format for user input: AAPL 5, BA 5
     print("Enter your stock portfolio using the format 'Symbol1 Quantity1, Symbol2 Quantity2,...' (e.g., 'AAPL 5, BA 5'):")

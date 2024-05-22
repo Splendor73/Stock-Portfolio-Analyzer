@@ -42,3 +42,4 @@ Contributions to this project are welcome. To contribute:
 5. Open a pull request.
 
 ```
+Author : "Yashu Patel
