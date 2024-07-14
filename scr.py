@@ -18,7 +18,7 @@ def scrape_djia_stocks(url):
     return stocks
 
 # Function to get stock data from Alpha Vantage
-def get_stock_data(symbol, rapidapi_key):
+def get_stock_data(symbol, rapidapi_key, start_date, end_date):  # Add start_date and end_date parameters
     url = "https://alpha-vantage.p.rapidapi.com/query"
     querystring = {
         "symbol": symbol,
@@ -33,10 +33,8 @@ def get_stock_data(symbol, rapidapi_key):
     if response.status_code == 200:
         data = response.json()
         if "Monthly Adjusted Time Series" in data:
-            # Extract the "Monthly Adjusted Time Series" data
             time_series = data["Monthly Adjusted Time Series"]
-            # Filter by date range (using full range for now)
-            filtered_data = filter_date_range(time_series, "2020-01-01", "2023-01-01")
+            filtered_data = filter_date_range(time_series, start_date, end_date)  # Use start_date and end_date
             return filtered_data
         else:
             print(f"Error in response for {symbol}: {data}")
@@ -83,11 +81,11 @@ def calculate_portfolio_metrics(all_stock_data, portfolio):
 
     return mean_daily_return, std_dev_daily_returns, cumulative_returns.iloc[-1]
 
-def fetch_and_prepare_data(portfolio, rapidapi_key):
+def fetch_and_prepare_data(portfolio, rapidapi_key, start_date, end_date):  # Add start_date and end_date parameters
     all_stock_data = pd.DataFrame()
     for symbol, quantity in portfolio.items():
         print(f"\nFetching data for {symbol}...")
-        stock_data = get_stock_data(symbol, rapidapi_key)
+        stock_data = get_stock_data(symbol, rapidapi_key, start_date, end_date)  # Pass start_date and end_date
         if stock_data:
             stock_df = pd.DataFrame.from_dict(stock_data, orient='index')
             stock_df = prepare_stock_dataframe(stock_df, symbol, quantity)
@@ -100,3 +98,4 @@ def fetch_and_prepare_data(portfolio, rapidapi_key):
     all_stock_data.rename(columns={'index': 'Date'}, inplace=True)
     all_stock_data['Date'] = pd.to_datetime(all_stock_data['Date'])
     return all_stock_data
+

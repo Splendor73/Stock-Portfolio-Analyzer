@@ -20,25 +20,31 @@ particlesJS("particles-js", {
 document.addEventListener('DOMContentLoaded', () => {
     const analyzeBtn = document.getElementById('analyzeBtn');
     const portfolioInput = document.getElementById('portfolio');
+    const startDateInput = document.getElementById('startDate');  // Get the start date input element
+    const endDateInput = document.getElementById('endDate');  // Get the end date input element
     const resultsDiv = document.getElementById('results');
 
     analyzeBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         const portfolio = portfolioInput.value;
+        const startDate = startDateInput.value;  // Get the value of start date
+        const endDate = endDateInput.value;  // Get the value of end date
         const apiKey = '8d34eb0b88mshc982a011ac648f3p17d5c6jsn82e7b43f8ff5'; // Using the provided API key
 
-        // Simulate loading
         resultsDiv.innerHTML = '<div class="text-center"><div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-500"></div></div>';
-        
+
+        console.log('Sending request to /analyze with data:', { portfolio, apiKey, startDate, endDate });
+
         try {
             const response = await fetch('/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ portfolio, apiKey })
+                body: JSON.stringify({ portfolio, apiKey, startDate, endDate })  // Include startDate and endDate in the request payload
             });
-            
+
             const data = await response.json();
-            
+            console.log('Response received from /analyze:', data);
+
             if (data.error) {
                 resultsDiv.innerHTML = `<div class="holographic-card"><p class="text-red-500">Error: ${data.error}</p></div>`;
             } else {
@@ -51,11 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="mb-2">Cumulative Returns: <span class="text-yellow-400">${data.cumulative_returns.toFixed(6)}</span></p>
                     </div>
                 `;
-                
+
                 // Create chart
                 createChart(data);
             }
         } catch (error) {
+            console.error('Error during fetch request:', error);
             resultsDiv.innerHTML = `<div class="holographic-card"><p class="text-red-500">Error: ${error.message}</p></div>`;
         }
     });
@@ -96,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         beginAtZero: true,
                         ticks: {
                             color: 'rgb(0, 255, 242)',
-                            callback: function(value) {
+                            callback: function (value) {
                                 return (value * 100).toFixed(2) + '%';
                             }
                         },
