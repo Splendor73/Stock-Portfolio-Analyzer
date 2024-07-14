@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quantum Stock Analyzer 3000</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  </head>
+  <body class="bg-black text-cyan-300 font-mono">
+    <div id="particles-js"></div>
+    <div class="container mx-auto px-4 py-8 relative z-10">
+      <h1 class="text-6xl font-bold mb-8 text-center neon-text">Quantum Stock Analyzer 3000</h1>
+
+      <div class="holographic-card mb-8">
+        <h2 class="text-3xl font-bold mb-4 glitch" data-text="Enter Quantum Portfolio">Enter Quantum Portfolio</h2>
+        <input type="text" id="portfolio" placeholder="e.g., AAPL 5, GOOGL 3, TSLA 2" class="w-full p-3 bg-transparent border-b-2 border-cyan-500 text-white placeholder-cyan-700 focus:outline-none focus:border-cyan-300" />
+        <!-- New input fields for date range -->
+        <input type="date" id="startDate" class="w-full p-3 bg-transparent border-b-2 border-cyan-500 text-white placeholder-cyan-700 focus:outline-none focus:border-cyan-300 mt-4" />
+        <input type="date" id="endDate" class="w-full p-3 bg-transparent border-b-2 border-cyan-500 text-white placeholder-cyan-700 focus:outline-none focus:border-cyan-300 mt-4" />
+      </div>
+
+      <button id="analyzeBtn" class="w-full cyber-button">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Initiate Quantum Analysis
+      </button>
+
+      <div id="results" class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Results will be populated here -->
+      </div>
+
+      <div id="chartContainer" class="mt-8 holographic-card">
+        <canvas id="portfolioChart"></canvas>
+      </div>
+
+      <div id="stockTable" class="mt-8 holographic-card hidden">
+        <h2 class="text-3xl font-bold mb-4 glitch" data-text="Stock Performance">Stock Performance</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full cyber-table">
+            <thead>
+              <tr>
+                <th>Symbol</th>
+                <th>Current Price</th>
+                <th>Change</th>
+                <th>Volume</th>
+              </tr>
+            </thead>
+            <tbody id="stockTableBody">
+              <!-- Stock data will be populated here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

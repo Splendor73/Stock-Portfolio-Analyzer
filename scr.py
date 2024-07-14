@@ -2,9 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
-import pandas as pd
-import time
-
 
 # Function to scrape DJIA stocks from Wikipedia
 def scrape_djia_stocks(url):
@@ -21,7 +18,7 @@ def scrape_djia_stocks(url):
     return stocks
 
 # Function to get stock data from Alpha Vantage
-def get_stock_data(symbol, rapidapi_key, start_date, end_date):
+def get_stock_data(symbol, rapidapi_key, start_date, end_date):  # Add start_date and end_date parameters
     url = "https://alpha-vantage.p.rapidapi.com/query"
     querystring = {
         "symbol": symbol,
@@ -35,12 +32,15 @@ def get_stock_data(symbol, rapidapi_key, start_date, end_date):
     response = requests.get(url, headers=headers, params=querystring)
     if response.status_code == 200:
         data = response.json()
-        # Extract the "Monthly Adjusted Time Series" data
-        time_series = data.get("Monthly Adjusted Time Series", {})
-        # Filter by date range
-        filtered_data = filter_date_range(time_series, start_date, end_date)
-        return filtered_data
+        if "Monthly Adjusted Time Series" in data:
+            time_series = data["Monthly Adjusted Time Series"]
+            filtered_data = filter_date_range(time_series, start_date, end_date)  # Use start_date and end_date
+            return filtered_data
+        else:
+            print(f"Error in response for {symbol}: {data}")
+            return None
     else:
+        print(f"Failed to fetch data for {symbol}: {response.status_code}")
         return None
 
 def filter_date_range(historical_data, start_str, end_str):
@@ -57,8 +57,6 @@ def prepare_stock_dataframe(stock_df, symbol, quantity):
     # Add additional columns for symbol and quantity
     stock_df['Symbol'] = symbol
     stock_df['Quantity'] = quantity
-    # Here you can also convert prices to numeric, if needed, and calculate returns
-    # stock_df['Price'] = pd.to_numeric(stock_df['Price'], errors='coerce')
     return stock_df
 
 def calculate_portfolio_metrics(all_stock_data, portfolio):
@@ -83,76 +81,21 @@ def calculate_portfolio_metrics(all_stock_data, portfolio):
 
     return mean_daily_return, std_dev_daily_returns, cumulative_returns.iloc[-1]
 
-
-def main():
-
-    # pd.set_option('display.max_rows', None) // uncomment this line if you want to see the full row of fetching data
-
-    # Header
-    print("=============================================")
-    print("       DJIA Stock Portfolio Analysis")
-    print("=============================================")
-
-    wiki_url = "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"
-    stocks = scrape_djia_stocks(wiki_url)
-    if stocks:
-        df = pd.DataFrame(stocks, columns=['Stock Symbol', 'Industry'])
-        df.index += 1
-        print("DJIA stock symbols and their industries:")
-        print(df)
-    else:
-        print("Failed to scrape DJIA stocks.")
-    
-    # Your API key
-    rapidapi_key = 'You Key'
-    
-    # Example format for user input: AAPL 5, BA 5
-    print("Enter your stock portfolio using the format 'Symbol1 Quantity1, Symbol2 Quantity2,...' (e.g., 'AAPL 5, BA 5'):")
-    portfolio_input = input("Your portfolio: ")
-    portfolio_items = portfolio_input.split(",")  # Split input by commas to get individual stocks
-    portfolio = {}
-    for item in portfolio_items:
-        symbol, quantity = item.strip().split()  # Split each item into symbol and quantity
-        portfolio[symbol.upper()] = int(quantity)
-    
-    # Define date range
-    start_date_str = '2020-01-01'
-    end_date_str = '2023-01-01'
-
-    # Initialize an empty DataFrame to hold all stock data
+def fetch_and_prepare_data(portfolio, rapidapi_key, start_date, end_date):  # Add start_date and end_date parameters
     all_stock_data = pd.DataFrame()
-
-    # Fetch and organize stock data within the date range
     for symbol, quantity in portfolio.items():
         print(f"\nFetching data for {symbol}...")
-        stock_data = get_stock_data(symbol, rapidapi_key, start_date_str, end_date_str)
+        stock_data = get_stock_data(symbol, rapidapi_key, start_date, end_date)  # Pass start_date and end_date
         if stock_data:
-            # Convert stock data to DataFrame
             stock_df = pd.DataFrame.from_dict(stock_data, orient='index')
-            # Prepare and adjust the DataFrame
             stock_df = prepare_stock_dataframe(stock_df, symbol, quantity)
-            # Concatenate the individual stock DataFrame to the all_stock_data DataFrame
             all_stock_data = pd.concat([all_stock_data, stock_df])
         else:
             print(f"Failed to fetch data for {symbol}.")
-
-    # Once all data is fetched, reset the index and organize columns
+    if all_stock_data.empty:
+        return None
     all_stock_data.reset_index(inplace=True)
     all_stock_data.rename(columns={'index': 'Date'}, inplace=True)
-    # Ensure date is in datetime format
     all_stock_data['Date'] = pd.to_datetime(all_stock_data['Date'])
-
-    # Print the compiled DataFrame
-    print(all_stock_data)
-
-    # At the end of your main() function, call the above method
-    mean_daily_return, std_dev_daily_returns, cumulative_returns = calculate_portfolio_metrics(all_stock_data, portfolio)
-
-    # Print the calculated metrics
-    print(f"Mean Daily Return for the portfolio: {mean_daily_return:.6f}")
-    print(f"Standard Deviation of Daily Returns for the portfolio: {std_dev_daily_returns:.6f}")
-    print(f"Cumulative Returns of the portfolio: {cumulative_returns:.6f}")
-
-if __name__ == "__main__":
-    main()
+    return all_stock_data
 
