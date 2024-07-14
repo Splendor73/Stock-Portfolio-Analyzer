@@ -1,0 +1,244 @@
+body {
+    background: linear-gradient(45deg, #000000, #1a1a2e);
+    overflow-x: hidden;
+}
+
+.neon-text {
+    animation: neon-glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon-glow {
+    from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #00fff2, 0 0 35px #00fff2, 0 0 40px #00fff2, 0 0 50px #00fff2, 0 0 75px #00fff2;
+    }
+
+    to {
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #00fff2, 0 0 17.5px #00fff2, 0 0 20px #00fff2, 0 0 25px #00fff2, 0 0 37.5px #00fff2;
+    }
+}
+
+.holographic-card {
+    background: rgba(0, 255, 242, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 255, 242, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.holographic-card:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 242, 0.5);
+    transform: translateY(-5px);
+}
+
+.cyber-button {
+    position: relative;
+    padding: 15px 30px;
+    color: #00fff2;
+    font-size: 18px;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: transparent;
+    border: 2px solid #00fff2;
+    transition: 0.5s;
+    overflow: hidden;
+}
+
+.cyber-button:hover {
+    color: #1a1a2e;
+    background: #00fff2;
+}
+
+.cyber-button span {
+    position: absolute;
+    display: block;
+}
+
+.cyber-button span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00fff2);
+    animation: btn-anim1 1s linear infinite;
+}
+
+@keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+
+    50%,
+    100% {
+        left: 100%;
+    }
+}
+
+.cyber-button span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #00fff2);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s
+}
+
+@keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+
+    50%,
+    100% {
+        top: 100%;
+    }
+}
+
+.cyber-button span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #00fff2);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s
+}
+
+@keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+
+    50%,
+    100% {
+        right: 100%;
+    }
+}
+
+.cyber-button span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #00fff2);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s
+}
+
+@keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+
+    50%,
+    100% {
+        bottom: 100%;
+    }
+}
+
+.glitch {
+    position: relative;
+    color: #00fff2;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00c1;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #00fff2, 2px 2px #ff00c1;
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(51px, 9999px, 19px, 0);
+    }
+
+    5% {
+        clip: rect(70px, 9999px, 84px, 0);
+    }
+
+    10% {
+        clip: rect(26px, 9999px, 59px, 0);
+    }
+
+    /* ... more keyframes ... */
+    100% {
+        clip: rect(26px, 9999px, 31px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    /* ... similar to glitch-anim ... */
+}
+
+.cyber-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border: 2px solid #00fff2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cyber-table th,
+.cyber-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 255, 242, 0.3);
+}
+
+.cyber-table th {
+    background-color: rgba(0, 255, 242, 0.2);
+    color: #00fff2;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.cyber-table tr:hover {
+    background-color: rgba(0, 255, 242, 0.1);
+}
+
+#particles-js {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.cyber-input {
+    background: rgba(0, 255, 242, 0.1);
+    border: 2px solid #00fff2;
+    color: #00fff2;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.cyber-input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 242, 0.5);
+}
+
+.cyber-input::-webkit-calendar-picker-indicator {
+    filter: invert(1) hue-rotate(180deg) brightness(1.5);
+}
